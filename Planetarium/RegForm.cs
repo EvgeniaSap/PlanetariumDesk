@@ -26,9 +26,7 @@ namespace Planetarium
         public RegForm(AuthForm authForm)
         {
             _authForm = authForm;
-
             InitializeComponent();
-
             comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
         }
 
@@ -46,10 +44,7 @@ namespace Planetarium
                             {
                                 if (Convert.ToString(textBox3.Text)== Convert.ToString(textBox4.Text)) //Проверка на совпадение введенных паролей
                                 {
-                                    
                                     MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
-                                    //conn.Open();
                                     try
                                     {
                                         conn.Open();
@@ -92,14 +87,10 @@ namespace Planetarium
 
                                         command.Parameters.AddWithValue("@log", Convert.ToString(textBox2.Text));
                                         command.Parameters.AddWithValue("@pass", hashedPass);
-
                                         command.Connection.Open();
                                         command.ExecuteNonQuery();
                                         command.Connection.Close();
-
-
                                         conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
                                         conn.Open();
                                         sql = "SELECT  id_account, id_account_type " +
                                        "FROM account " +
@@ -158,11 +149,9 @@ namespace Planetarium
                                                     _authForm.Visible = true; //Переход к форме авторизации;
                                                 }
 
-
                                                 textBox1.Clear();
                                                 textBox2.Clear();
                                                 textBox3.Clear();
-
                                             }
                                             else
                                             {
@@ -170,19 +159,14 @@ namespace Planetarium
                                                 conn.Close();
                                                 MessageBox.Show("Выбранная должность не найдена");
                                             }
-                                            //  posit.Close();
                                         }
                                         else
                                         {
                                             MessageBox.Show("только что добавленный акк не найден");
                                             newuser.Close();
                                             conn.Close();
-
                                         }
-                                        // newuser.Close();
                                     }
-
-                                    // user.Close();
                                     conn.Close();
                                 }
                                 else
@@ -225,23 +209,14 @@ namespace Planetarium
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             _selectedPosit = comboBox1.SelectedItem.ToString();
-           // MessageBox.Show(selectedPosit);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            /*char фио = e.KeyChar; //Символьная переменная, e.KeyChar - параметр;
-
-            if (Char.IsDigit(фио) && фио != 240 && фио != 8) //цифра, не пробел и не клавиша BackSpace, используя коды ASCII;
-            {
-                e.Handled = true; //Тогда не обрабатывать введенный символ (и, следовательно, не выводить его в TextBox1);
-            }*/
-
             if (Char.IsLetter(e.KeyChar) | e.KeyChar == 8 | e.KeyChar == 32) return;
             else
                 e.Handled = true;
@@ -264,7 +239,6 @@ namespace Planetarium
         private void RegForm_Load(object sender, EventArgs e)
         {
             MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
             conn.Open();
             string sql = "SELECT  name_position " +
                 "FROM position ";
@@ -282,7 +256,6 @@ namespace Planetarium
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
