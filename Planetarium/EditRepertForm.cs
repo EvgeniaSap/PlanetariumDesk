@@ -29,7 +29,6 @@ namespace Planetarium
             _adminMainForm = adminForm;
             _data_tick = new List<int>();
             _key = "";
-
             InitializeComponent();
         }
 
@@ -79,9 +78,7 @@ namespace Planetarium
 
         private void OutputEventPrice() //Выводим в DataGridView весь репертуар
         {
-
             MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
             conn.Open();
             string sql = "SELECT name_event, name_event_type, price, install_date, ticket_price.id_price " +
                 "FROM event_type " +
@@ -90,10 +87,7 @@ namespace Planetarium
                 "JOIN ticket_price " +
                 "ON event.id_event = ticket_price.id_event " +
                 "ORDER BY  name_event, install_date DESC";
-
-
             MySqlCommand command = new MySqlCommand(sql, conn);
-
             MySqlDataReader event_tick = command.ExecuteReader();
             if (_key != "actual")
             {
@@ -112,26 +106,19 @@ namespace Planetarium
                         if (dataGridView1.Rows[dataGridView1.RowCount-1].Cells[0].Value.ToString() != event_tick[0].ToString())
                         {
                             dataGridView1.Rows.Add(event_tick[0].ToString(), event_tick[1].ToString(), event_tick[2].ToString(), event_tick[3].ToString());
-
                             _data_tick.Add(Convert.ToInt32(event_tick[4]));
                         }
                     }
                     else
                     {
                         dataGridView1.Rows.Add(event_tick[0].ToString(), event_tick[1].ToString(), event_tick[2].ToString(), event_tick[3].ToString());
-
                         _data_tick.Add(Convert.ToInt32(event_tick[4]));
                     }
-
-
                 }
             }
-
             event_tick.Close();
             conn.Close();
-
             dataGridView1.AllowUserToAddRows = false; //запрещаем пользователю самому добавлять строки
-
         }
 
         private void button2_Click(object sender, EventArgs e) //Изменить или добавить мероприятие
@@ -142,12 +129,9 @@ namespace Planetarium
                 if (button2.Text == "Изменить") //Добавить новую запись в таблицу с ценами
                 {
                     DateTime date1 = DateTime.Today; //Дата сейчас
-                    
                     _some_event = new Event((string)dataGridView1.CurrentRow.Cells[1].Value, (string)dataGridView1.CurrentRow.Cells[0].Value, Convert.ToString(date1).Substring(0, 10));
-
                     this.Hide();
                     AddEditForm Edit_event = new AddEditForm(_authForm, _adminMainForm, this, "add_new", _some_event) { Visible = true }; //Открываем форму для просмотра всего расписания
-
                 }
                 else //Добавить новое мероприятие ВЫГРУЗИТЬ ИЗ ФАЙЛА СОТР
                 {
@@ -162,8 +146,6 @@ namespace Planetarium
             {
                 MessageBox.Show("Данной ячейки не существует!");
             }
-
-            //dataGridView1.Rows.Clear();
         }
 
         private void button4_Click(object sender, EventArgs e) //Отобразить только актуальные цены
@@ -175,15 +157,12 @@ namespace Planetarium
 
         private void button3_Click(object sender, EventArgs e) //Добавить новое мероприятие //Отобразить предложенные мероприятия
         {
-            // dataGridView1.Rows.Clear();
             Event _some_event;
             DateTime date1 = DateTime.Today; //Дата сейчас
             _some_event = new Event();
-            // _some_event = new Event((string)dataGridView1.CurrentRow.Cells[1].Value, (string)dataGridView1.CurrentRow.Cells[0].Value, Convert.ToString(date1).Substring(0, 10));
             _some_event.Date_event = Convert.ToString(date1).Substring(0, 10);
             this.Hide();
             AddEditForm Edit_event = new AddEditForm(_authForm, _adminMainForm, this, "add_new", _some_event) { Visible = true }; //Открываем форму для просмотра всего расписания
-
         }
 
         private void button5_Click(object sender, EventArgs e) //Переход к полному списку
