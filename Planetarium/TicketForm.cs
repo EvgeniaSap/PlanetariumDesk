@@ -36,7 +36,6 @@ namespace Planetarium
             _del_tick = new List<int>();
             _tick = new List<int>();
             _key = key;
-
             InitializeComponent();
         }
 
@@ -47,7 +46,6 @@ namespace Planetarium
             _adminMainForm = adminMainForm;
             _fullScheduleForm = fullScheduleForm;
             _key = key;
-
             InitializeComponent();
         }
 
@@ -62,7 +60,6 @@ namespace Planetarium
             if (_key != "top")
             {
                 label1.Text = "Билеты на " + _some_event.Schedule[0].Date_event;
-
                 if (_key == "data_ev")
                 {
                     label1.Text += " на " + _some_event.Schedule[0].Name_event;
@@ -90,22 +87,18 @@ namespace Planetarium
 
                 var column3 = new DataGridViewColumn();
                 column3.HeaderText = "Билеты";
-                //  column2.Width = 50;
                 column3.Name = "Tickets";
                 column3.CellTemplate = new DataGridViewTextBoxCell();
 
                 var column4 = new DataGridViewColumn();
                 column4.HeaderText = "Цена";
-                //  column2.Width = 40;
                 column4.Name = "Price";
                 column4.CellTemplate = new DataGridViewTextBoxCell();
 
                 var column5 = new DataGridViewColumn();
                 column5.HeaderText = "Пометка";
-                // column2.Width = 70;
                 column5.Name = "Status";
                 column5.CellTemplate = new DataGridViewTextBoxCell();
-
 
                 dataGridView1.Columns.Add(column1);
                 dataGridView1.Columns.Add(column2);
@@ -114,7 +107,7 @@ namespace Planetarium
                 dataGridView1.Columns.Add(column5);
                 dataGridView1.EnableHeadersVisualStyles = false;
                 dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font(dataGridView1.ColumnHeadersDefaultCellStyle.Font.FontFamily, 10f, FontStyle.Regular); //жирный курсив размера 16
-
+                
                 OutputTickets();
             }
             else
@@ -125,7 +118,7 @@ namespace Planetarium
                 button2.Visible = false;
                 button3.Enabled = false;
                 button3.Visible = false;
-
+                
                 //мероприятие, тип, телефон, кол-во заказов, кол-во билетов, итоговая цена
                 var column1 = new DataGridViewColumn();
                 column1.HeaderText = "Мероприятие"; //текст в шапке
@@ -141,19 +134,16 @@ namespace Planetarium
 
                 var column3 = new DataGridViewColumn();
                 column3.HeaderText = "Сделано заказов";
-                //  column2.Width = 50;
                 column3.Name = "Order";
                 column3.CellTemplate = new DataGridViewTextBoxCell();
 
                 var column4 = new DataGridViewColumn();
                 column4.HeaderText = "Заказано билетов";
-                //  column2.Width = 40;
                 column4.Name = "Tickets";
                 column4.CellTemplate = new DataGridViewTextBoxCell();
 
                 var column5 = new DataGridViewColumn();
                 column5.HeaderText = "Общая цена";
-                // column2.Width = 70;
                 column5.Name = "Price";
                 column5.CellTemplate = new DataGridViewTextBoxCell();
 
@@ -167,13 +157,11 @@ namespace Planetarium
 
                 OutputTop();
             }
-
         }
 
         private void OutputTickets() //Выводим в DataGridView новые значения
         {
             MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
             conn.Open();
             string sql = "SELECT login, contact_person, phone, numb_ticket, final_price, ticket.status, ticket.id_ticket " +
                 "FROM account " +
@@ -192,7 +180,6 @@ namespace Planetarium
             {
                 sql += "AND name_room = @room AND time_event = @time";
             }
-
             MySqlCommand command = new MySqlCommand(sql, conn);
             command.Parameters.Add("@data", MySqlDbType.VarChar).Value = _some_event.Schedule[0].Date_event;
             if (_key == "data_ev")
@@ -200,9 +187,7 @@ namespace Planetarium
                 command.Parameters.Add("@room", MySqlDbType.VarChar).Value = _some_event.Schedule[0].Event_room.Name_room;
                 command.Parameters.Add("@time", MySqlDbType.VarChar).Value = _some_event.Schedule[0].Time_event;
             }
-            
             MySqlDataReader date_event_tick = command.ExecuteReader();
-            
             while (date_event_tick.Read())
             {
                 string stat = "";
@@ -211,16 +196,11 @@ namespace Planetarium
                     stat = "Отменён";
                     _del_tick.Add(Convert.ToInt32(date_event_tick[6]));
                 }
-               
                 dataGridView1.Rows.Add(date_event_tick[0].ToString(), date_event_tick[1].ToString()+"("+ date_event_tick[2].ToString()+")", date_event_tick[3].ToString(), date_event_tick[4].ToString(), stat);
                 _tick.Add(Convert.ToInt32(date_event_tick[6]));
             }
-
-
-        
             date_event_tick.Close();
             conn.Close();
-
             int tickets = 0;
             int sum_price = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -228,11 +208,8 @@ namespace Planetarium
                 tickets += Convert.ToInt32(row.Cells[2].Value);
                 sum_price += Convert.ToInt32(row.Cells[3].Value);
             }
-
             dataGridView1.Rows.Add("Итого:", "", tickets, sum_price, "");
-
             dataGridView1.AllowUserToAddRows = false; //запрещаем пользователю самому добавлять строки
-
         }
 
         private void OutputTop() //Выводим в DataGridView новые значения рейтинга мероприятий
@@ -240,7 +217,6 @@ namespace Planetarium
             DateTime date1 = DateTime.Today; //Дата сейчас
            
             MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
             conn.Open();
             string sql = "SELECT name_event, name_event_type, COUNT(numb_ticket), SUM(numb_ticket), SUM(final_price), schedule.id_event " +
                 "FROM event_type " + 
@@ -252,23 +228,17 @@ namespace Planetarium
                 "ON schedule.id_schedule_entry = ticket.id_schedule " +
                 "LEFT JOIN schedule_empl " +
                 "ON  schedule.id_schedule_entry = schedule_empl.id_schedule_entry " +
-           //     "WHERE schedule.data_event > '" + Convert.ToString(date1).Substring(0, 10) + "' AND schedule.data_event < '"+ Convert.ToString(date1.AddDays(30)).Substring(0, 10)+ "' "+
                 "GROUP BY schedule.id_event "+
                 "ORDER BY SUM(numb_ticket) DESC ";
-            
-
+           
             MySqlCommand command = new MySqlCommand(sql, conn);
-            
             MySqlDataReader event_tick = command.ExecuteReader();
-
             while (event_tick.Read())
             {
                 dataGridView1.Rows.Add(event_tick[0].ToString(), event_tick[1].ToString(), event_tick[2].ToString(), event_tick[3].ToString(), event_tick[4].ToString());
             }
-
             event_tick.Close();
             conn.Close();
-
             int orders = 0;
             int tickets = 0;
             int sum_price = 0;
@@ -286,13 +256,9 @@ namespace Planetarium
                     tickets += 0;
                     sum_price += 0;
                 }
-                
             }
-
             dataGridView1.Rows.Add("Итого:", "", orders, tickets, sum_price);
-
             dataGridView1.AllowUserToAddRows = false; //запрещаем пользователю самому добавлять строки
-
         }
 
         private void button2_Click(object sender, EventArgs e) //Удалить все заказы, помеченные на удаление
@@ -321,7 +287,6 @@ namespace Planetarium
                 OutputTickets();
             }
             this.TopMost = true;
-           
         }
 
         private void button3_Click(object sender, EventArgs e) //Удалить выбранный заказ
@@ -337,10 +302,8 @@ namespace Planetarium
                       MessageBoxOptions.DefaultDesktopOnly);
                 if (result == DialogResult.Yes)
                 {
-                    // MessageBox.Show(_tick[dataGridView1.CurrentRow.Index].ToString());
                     MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
                     string sql = "DELETE FROM ticket WHERE id_ticket = @id";
-
                     MySqlCommand command = new MySqlCommand(sql, conn);
                     command.Parameters.AddWithValue("@id", _tick[dataGridView1.CurrentRow.Index]);
                     command.Connection.Open();
@@ -351,7 +314,6 @@ namespace Planetarium
                     OutputTickets();
                 }
                 this.TopMost = true;
-                
             }
             catch
             {
