@@ -25,12 +25,10 @@ namespace Planetarium
 
         private void textBox1_TextChanged(object sender, EventArgs e) //Ввод логина
         {
-            
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e) //Ввод пароля
-        {
-            
+        { 
         }
         
         private void button1_Click(object sender, EventArgs e) //Кнопка "Войти"
@@ -46,9 +44,7 @@ namespace Planetarium
                     string hashedPass = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
 
                     MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-     
-                    //conn.Open();
-
+    
                     try
                     {
                         conn.Open();
@@ -62,14 +58,11 @@ namespace Planetarium
                         "FROM account " +
                           "WHERE login = @log  AND password = @pass";
 
-                 //   string sql = String.Format("SELECT id_account FROM account WHERE login = '{0}'", Convert.ToString(textBox1.Text));
-
                     MySqlCommand command = new MySqlCommand(sql, conn);
                     command.Parameters.Add("@log", MySqlDbType.VarChar).Value = Convert.ToString(textBox1.Text);
                     command.Parameters.Add("@pass", MySqlDbType.VarChar).Value = hashedPass;
                     MySqlDataReader user = command.ExecuteReader();
                     
-
                     if (user.Read())
                     {
                         if(user[1].ToString() == "1")
@@ -82,13 +75,11 @@ namespace Planetarium
                             //переход в форму для сотрудника
                             this.Visible = false;
                             _userAccForm = new UserAccForm(this, Convert.ToInt32(user[0])) { Visible = true }; //Переход в личный кабинет сотрудника;
-                          //  MessageBox.Show(user[0].ToString());
                         }
                         else
                         {
                             MessageBox.Show("Вы не сотрудник Планетария!");
                         }
-
                         textBox1.Clear();
                         textBox2.Clear();
                     }
@@ -96,7 +87,6 @@ namespace Planetarium
                     {
                         MessageBox.Show("Пользователь не найден!");
                     }
-
                     user.Close();
                     conn.Close();
                 }
@@ -105,12 +95,10 @@ namespace Planetarium
                     MessageBox.Show("Введите пароль.");
                 }
             }
-
             else
             {
                 MessageBox.Show("Введите логин.");
             }
-
         }
 
         private void button2_Click(object sender, EventArgs e) //Кнопка "Регистрация"
