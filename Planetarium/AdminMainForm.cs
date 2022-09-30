@@ -29,7 +29,6 @@ namespace Planetarium
         public AdminMainForm(AuthForm authForm) //Переход с формы авторизации
         {
             _authForm = authForm;
-
             InitializeComponent();
         }
 
@@ -37,16 +36,11 @@ namespace Planetarium
         {
             _authForm = authForm;
             _regForm = regForm;
-
             InitializeComponent();
         }
 
-
         private void лекцииToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //  listBox1.Items.Clear();
-            // this.Close();
-            // AdminMainForm new_admin = new  AdminMainForm(_authForm, 1) { Visible = true }; //Открываем эту же форму с новыми значениями listbox1
             _listInd = -1;
             button1.Text = "Расписание лекции";
             _i = 1;
@@ -76,11 +70,11 @@ namespace Planetarium
             _i = 4;
             OutputEvents(); //Выводим перечень лабораторных занятий
         }
+        
         private void всеToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _listInd = -1;
             button1.Text = "Расписание мероприятия";
-            
             _i = 0;
             OutputEvents(); //Выводим весь репертуар 
         }
@@ -120,7 +114,6 @@ namespace Planetarium
 
         private void label2_Click(object sender, EventArgs e)
         {
-
         }
 
         private void AdminMainForm_Load(object sender, EventArgs e) //Загрузка формы
@@ -132,17 +125,12 @@ namespace Planetarium
 
         private void button1_Click(object sender, EventArgs e) //Нажатие на кнопку редактирования при выбранном пункте listbox1 
         {
-
             if (_listInd!=-1)
             {
-
                 if (_i == 0 || _i == 1 || _i == 2 || _i == 3 || _i == 4)
                 {
-                   // str = "Вы выбрали " + _some_events[_listInd].Name_event;
-                   // MessageBox.Show(str);
                     this.Hide();
                     FullScheduleForm full_sched = new FullScheduleForm(_authForm, this, "event", _some_events[_listInd]) { Visible = true }; //Открываем форму для просмотра расписания мероприятия
-
                 }
                 else if (_i == 5)
                 {
@@ -152,31 +140,24 @@ namespace Planetarium
                 }
                 else if (_i == 6)
                 {
-                   // str = "Вы выбрали " + _employees[_listInd].Full_name;
-                   // MessageBox.Show(str);
                     this.Hide();
                     FullScheduleForm full_sched = new FullScheduleForm(_authForm, this, "empl", _employees[_listInd]) { Visible = true }; //Открываем форму для просмотра всего расписания сотрудника
 
                 }
                 else if (_i == 7)
                 {
-                   // str = "Вы выбрали " + _rooms[_listInd].Name_room;
-                   // MessageBox.Show(str);
                     this.Hide();
                     FullScheduleForm full_sched = new FullScheduleForm(_authForm, this, "room", _rooms[_listInd]) { Visible = true }; //Открываем форму для просмотра всего расписания сотрудника
-
                 }
             }
             else
             {
                 MessageBox.Show("Для начала выберите элемент из списка.");
             }
-            
         }
 
         private void button2_Click(object sender, EventArgs e) //Нажатие на кнопку перейти к полному расписанию планетария
         {
-           // MessageBox.Show("Отобразить полное расписание");
             this.Hide();
             FullScheduleForm full_sched = new FullScheduleForm(_authForm, this, "full") { Visible = true }; //Открываем форму для просмотра всего расписания
         }
@@ -200,14 +181,14 @@ namespace Planetarium
                 sql += "WHERE event.id_event_type = @id";
             }
 
-                MySqlCommand command = new MySqlCommand(sql, conn);
+            MySqlCommand command = new MySqlCommand(sql, conn);
 
             if (_i != 0 && _i != 5)
             {
                 command.Parameters.Add("@id", MySqlDbType.VarChar).Value = Convert.ToString(_i);
             }
 
-            MySqlDataReader all_events = command.ExecuteReader();
+                MySqlDataReader all_events = command.ExecuteReader();
 
                 int i = 0; //Индекс для строки в списке;
                 string str; //Текст для строки с списке;
@@ -222,36 +203,6 @@ namespace Planetarium
                     i++;
                 }
                 all_events.Close();
-
-                /* label2.Text = "Все мероприятия:";
-                 MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
-                 conn.Open();
-                 string sql = "SELECT name_event " +
-                     "FROM event ";
-
-                 MySqlCommand command = new MySqlCommand(sql, conn);
-                 MySqlDataReader all_events = command.ExecuteReader();
-
-                 int i = 0; //Индекс для строки в списке;
-                 string str; //Текст для строки с списке;
-
-                 while (all_events.Read())
-                 {
-                     str = i + 1 + ") " + all_events[0].ToString();
-                     listBox1.Items.Insert(i, str);
-                     i++;
-                 }
-
-                 all_events.Close();
-                 conn.Close();*/
-                 
-                /*Dictionary<int, string> name_types = new Dictionary<int, string>(); //Ассоциативный массив для вывода названий типов мероприятий
-                name_types.Add(1, "Лекции:");
-                name_types.Add(2, "Экскурсии:");
-                name_types.Add(3, "Фильмы:");
-                name_types.Add(4, "Лабораторные занятия:");*/
-            
             conn.Close();
         }
 
@@ -263,9 +214,7 @@ namespace Planetarium
             _employees = new List<Employee>();
             _rooms = new List<Room>();
             
-
             MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
             conn.Open();
             if (_ind == 0)
             {
@@ -276,7 +225,6 @@ namespace Planetarium
                     "ON employee.id_position = position.id_position";
                 
                 MySqlCommand command = new MySqlCommand(sql, conn);
-                
                 MySqlDataReader all_empl = command.ExecuteReader();
 
                 int i = 0; //Индекс для строки в списке;
@@ -285,7 +233,6 @@ namespace Planetarium
                 while (all_empl.Read())
                 {
                     _employees.Add(new Employee((int)all_empl[0], all_empl[1].ToString(), (int)all_empl[4], all_empl[2].ToString())); //Добавление мероприятия в список;
-
                     str = i + 1 + ") " + all_empl[1].ToString() + ", " + all_empl[2].ToString();
                     listBox1.Items.Insert(i, str);
                     i++;
@@ -301,12 +248,10 @@ namespace Planetarium
                     "ON room.id_room_type = room_type.id_room_type";
 
                 MySqlCommand command = new MySqlCommand(sql, conn);
-
                 MySqlDataReader all_rooms = command.ExecuteReader();
 
                 int i = 0; //Индекс для строки в списке;
                 string str; //Текст для строки с списке;
-
                 while (all_rooms.Read())
                 {
                     _rooms.Add(new Room((int)all_rooms[0], all_rooms[1].ToString(), (int)all_rooms[2], all_rooms[3].ToString())); //Добавление мероприятия в список;
@@ -324,7 +269,6 @@ namespace Planetarium
         {
             this.Hide();
             EditRepertForm full_sched = new EditRepertForm(_authForm, this) { Visible = true }; //Открываем форму для редактирования репертуара
-
         }
     }
 }
