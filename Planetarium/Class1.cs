@@ -45,7 +45,6 @@ namespace Planetarium
             Name_posinion = name_pos;
             Id_account = id_acc;
         }
-
     }
 
     public class Event
@@ -101,7 +100,6 @@ namespace Planetarium
 
         public Room()
         {
-
         }
 
         public Room(string name)
