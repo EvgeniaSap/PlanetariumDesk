@@ -34,17 +34,6 @@ namespace Planetarium
             InitializeComponent();
         }
 
-    /*    public AddEditForm(AuthForm authForm, AdminMainForm adminMainForm, FullScheduleForm fullScheduleForm, string key, Employee edit_event) //Редактировать мероприятие - из полного списка
-        {
-            _authForm = authForm;
-            _adminMainForm = adminMainForm;
-            _fullScheduleForm = fullScheduleForm;
-            _key = key;
-            _edit_event = edit_event;
-
-            InitializeComponent();
-        }*/
-
         public AddEditForm(AuthForm authForm, AdminMainForm adminMainForm, FullScheduleForm fullScheduleForm, string key, string date) // добавить мероприятие - в полный спискок
         {
             _authForm = authForm;
@@ -103,15 +92,6 @@ namespace Planetarium
 
         private void AddEditForm_Load(object sender, EventArgs e)
         {
-            /* DateTime date1 = DateTime.Today; //Дата сейчас
-
-             for (int i = 30; i < 62; i++)
-             {
-                 comboBox3.Items.Add(Convert.ToString(date1.AddDays(i)).Substring(0, 10)); //Выводим в combobox3 даты
-             }*/
-
-            //comboBox3.Items.Add(_edit_event.Schedule[0].Date_event); //Выводим в combobox3 выбранную дату
-
             switch (_key)
             {
                 case "edit": //редактирование
@@ -222,11 +202,7 @@ namespace Planetarium
                         OutputEvent(); //Вывод мероприятий
                     }
                     break;
-
             }
-
-            // OutputEvent();
-
         }
 
         private void button1_Click(object sender, EventArgs e) //Кнопка назад
@@ -282,20 +258,16 @@ namespace Planetarium
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             _selectedPositType = comboBox2.SelectedItem.ToString(); //Выбранный тип мероприятия
-
             OutputRoom(); //Вывод помещений
             OutputEmpl(); //Вывод сотрудников
-
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e) //Выбор дня
         {
             _selectedPositData = comboBox3.SelectedItem.ToString();
-
             OutputTime();
-
-            //comboBox4.SelectedItem = _edit_event.Schedule[0].Time_event;
         }
+        
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e) //Выбор времени 
         {
             _selectedPositTime = comboBox4.SelectedItem.ToString();
@@ -304,17 +276,12 @@ namespace Planetarium
         private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
         {
             _selectedPositRoom = comboBox5.SelectedItem.ToString(); //Выбранное помещение
-
-            // OutputRoom();
         }
 
         private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
         {
             _selectedPositEmpl = comboBox6.SelectedItem.ToString(); //Выбранный сотрудник
         }
-        //как сделать чтобы пользователь мог сам добавлять текст в некотор стр, но в некоторые нет
-        //также возм огр ввод
-        //добавление нового мероприятия по заявке сотрудника форма с кнопкой добавить
 
         private void OutputEvent() //Вывод мероприятий
         {
@@ -339,20 +306,7 @@ namespace Planetarium
         private void OutputTime() //Заполнение времени с расчетом свободного
         {
             comboBox4.Items.Clear();
-
-            // if (string.IsNullOrEmpty(_edit_event.Full_name))
-            //   {
-            /*if (_key =="edit")
-            {
-                if (_selectedPositEvent == _edit_event.Schedule[0].Name_event)
-                {
-                    comboBox4.Items.Add(Convert.ToString(_edit_event.Schedule[0].Time_event));
-                }
-            }*/
-            // }
-
             MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
             conn.Open();
             string sql = "SELECT time_event, duration_event, data_event, room.name_room " +
                 "FROM schedule_empl " +
@@ -396,27 +350,20 @@ namespace Planetarium
                     if (i >= hour && i <= end_hour)
                     {
                         busy_time2.Add(i);
-
                     }
-
                 }
-
                 if (busy_time2.Count() == 0)
                 {
                     comboBox4.Items.Add(Convert.ToString(i + ":00"));
-
                 }
             }
-
             if (comboBox4.Items.Count != 10 && _key == "edit")
             {
                     if (_selectedPositEvent == _edit_event.Schedule[0].Name_event)
                     {
                         comboBox4.Items.Add(Convert.ToString(_edit_event.Schedule[0].Time_event));
                     }
-                
             }
-
         }
 
         private void OutputType() //Вывод типа мероприятия
@@ -435,20 +382,15 @@ namespace Planetarium
             {
                 comboBox2.Items.Add(Convert.ToString(all_event_type[0]));
             }
-
             all_event_type.Close();
-
             conn.Close();
         }
 
         private void OutputTypeForEdit() //Вывод типа мероприятия для редактирования
         {
             comboBox2.Items.Clear();
-
             MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
             conn.Open();
-
             string sql = "SELECT name_event_type, name_event " +
                     "FROM event_type " +
                     "JOIN event " +
@@ -463,17 +405,13 @@ namespace Planetarium
             {
                 comboBox2.Items.Add(Convert.ToString(all_event_type[0]));
             }
-
             all_event_type.Close();
-
             conn.Close();
-
         }
 
         private void OutputEmpl() //Вывод сотрудников
         {
             comboBox6.Items.Clear();
-
             if (_key_FullSchForm != "empl")
             {
                 MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
@@ -492,7 +430,6 @@ namespace Planetarium
                 {
                     comboBox6.Items.Add(Convert.ToString(empl_for_type[0]));
                 }
-
                 empl_for_type.Close();
                 conn.Close();
             }
@@ -505,7 +442,6 @@ namespace Planetarium
         private void OutputRoom() //Вывод помещений
         {
             comboBox5.Items.Clear();
-
             if (_key_FullSchForm != "room")
             {
                 MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
@@ -516,7 +452,6 @@ namespace Planetarium
                     "JOIN room_type " +
                     "ON room.id_room_type = room_type.id_room_type " +
                     "WHERE name_room_type LIKE ";
-
 
                 if (_selectedPositType.Substring(0, 3) == "экс")
                 {
@@ -538,7 +473,6 @@ namespace Planetarium
                 {
                     comboBox5.Items.Add(Convert.ToString(room_for_type[0]));
                 }
-
                 room_for_type.Close();
                 conn.Close();
             }
@@ -557,42 +491,23 @@ namespace Planetarium
             else if (_key_FullSchForm == "empl" || _key_FullSchForm == "room")
             {
                 OutputForAddForER(); //Отображение данных для добавления мероприятия для сотрудника
-                                     //comboBox1.Items.Add(_edit_event.Schedule[0].Name_event); //Выводим в combobox1 выбранное мероприятие
             }
             else
             {
                 OutputEvent(); //Вывод мероприятий
             }
-           // OutputEvent();
             comboBox1.SelectedItem = _edit_event.Schedule[0].Name_event;
-
             comboBox2.SelectedItem = _edit_event.Schedule[0].Name_event_type;
             comboBox5.SelectedItem = _edit_event.Schedule[0].Event_room.Name_room;
             comboBox6.SelectedItem = _edit_event.Full_name;
-
             comboBox3.SelectedItem = _edit_event.Schedule[0].Date_event;
-
-
             comboBox4.SelectedItem = _edit_event.Schedule[0].Time_event;
-
         }
 
         private void OutputForAddForER() //Отображение данных для добавления мероприятия для сотрудника или для помещения
         {
-            /* OutputEvent();
-             comboBox1.SelectedItem = _edit_event.Schedule[0].Name_event;
-
-             comboBox2.SelectedItem = _edit_event.Schedule[0].Name_event_type;
-             comboBox5.SelectedItem = _edit_event.Schedule[0].Event_room.Name_room;
-             comboBox6.SelectedItem = _edit_event.Full_name;
-
-             comboBox3.SelectedItem = _edit_event.Schedule[0].Date_event;
-
-             comboBox4.SelectedItem = _edit_event.Schedule[0].Time_event;*/
-
             if (_key_FullSchForm == "empl") //выгрузить данные для сотрудника
             {
-                //должность сотр, выгружать из бд по типу?
                 //Находим сотрудника, которому добавляем мероприятие
                   MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
                   conn.Open();
@@ -631,12 +546,8 @@ namespace Planetarium
                 {
                     comboBox1.Items.Add(Convert.ToString(events_for_empl[0]));
                 }
-
                 events_for_empl.Close();
                 conn.Close();
-
-
-
             }
             else if (_key_FullSchForm == "room")
             {
@@ -650,29 +561,20 @@ namespace Planetarium
                    "WHERE name_room = @name ";
 
                 MySqlCommand command = new MySqlCommand(sql, conn);
-
-              //  MessageBox.Show(_edit_event.Schedule[0].Event_room.Name_room);
-
                 command.Parameters.AddWithValue("@name", _edit_event.Schedule[0].Event_room.Name_room);
                 MySqlDataReader id_room = command.ExecuteReader();
                 id_room.Read();
-
-                //_edit_event.Id_emloyee = Convert.ToInt32(id_room[0]);
                 _edit_event.Schedule[0].Event_room.Name_room_type = Convert.ToString(id_room[1]);
-
                 id_room.Close();
                 conn.Close();
 
                 conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-
                 conn.Open();
                 sql = "SELECT name_event, name_event_type " +
                     "FROM event " +
                     "JOIN event_type " +
                     "ON event.id_event_type = event_type.id_event_type " +
                     "WHERE name_event_type LIKE ";
-
-              //  MessageBox.Show(_edit_event.Schedule[0].Event_room.Name_room_type);
 
                 if (_edit_event.Schedule[0].Event_room.Name_room_type.Substring(0, 3) == "муз")
                 {
@@ -686,7 +588,6 @@ namespace Planetarium
                 {
                     sql += "'" + _edit_event.Schedule[0].Event_room.Name_room_type.Substring(0, 3) + "%'";
                 }
-
                 command = new MySqlCommand(sql, conn);
                 MySqlDataReader events_for_room = command.ExecuteReader();
 
@@ -694,13 +595,9 @@ namespace Planetarium
                 {
                     comboBox1.Items.Add(Convert.ToString(events_for_room[0]));
                 }
-
                 events_for_room.Close();
                 conn.Close();
-
-
             }
-
         }
 
         private void SaveEdit() //Сохранение изменений
@@ -737,23 +634,13 @@ namespace Planetarium
 
                         sql = "SELECT id_room, name_room " +// name_room, data_event, time_event, full_name " +
                             "FROM room " +
-                            // "JOIN schedule " +
-                            //  "ON event.id_event = schedule.id_event " +
-                            // "JOIN room " +
-                            //  "ON schedule.id_room = room.id_room " +
-                            //  "JOIN schedule_empl " +
-                            // "ON schedule.id_schedule_entry = schedule_empl.id_event_entry " +
-                            //  "JOIN employee " +
-                            //   "ON schedule_empl.id_employee = employee.id_employee " +
                             "WHERE name_room = @name ";
 
                         command = new MySqlCommand(sql, conn);
                         command.Parameters.Add("@name", MySqlDbType.VarChar).Value = _selectedPositRoom;
                         ed_event = command.ExecuteReader();
                         ed_event.Read();
-
                         edit_event.Add("id_room", Convert.ToString(ed_event[0]));
-
                         ed_event.Close();
                         conn.Close();
 
@@ -810,9 +697,7 @@ namespace Planetarium
                         command.Parameters.AddWithValue("@name", _selectedPositEmpl);
                         ed_event = command.ExecuteReader();
                         ed_event.Read();
-
                         edit_event.Add("id_empl", Convert.ToString(ed_event[0]));
-
                         ed_event.Close();
                         conn.Close();
 
@@ -825,18 +710,14 @@ namespace Planetarium
                            "WHERE id_event_entry = @id_ev AND id_employee = @id_empl";
 
                         command = new MySqlCommand(sql, conn);
-
                         command.Parameters.AddWithValue("@id_ev", edit_event["id_schedule"]);
                         command.Parameters.AddWithValue("@id_empl", edit_event["id_empl"]);
 
                         ed_event = command.ExecuteReader();
                         ed_event.Read();
-
                         edit_event.Add("id_sched_emp", Convert.ToString(ed_event[0]));
-
                         ed_event.Close();
                         conn.Close();
-
 
                         //Исправляем запись в расписании сотрудников
                         conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
@@ -881,7 +762,6 @@ namespace Planetarium
                     if (Convert.ToInt32(textBox3.Text) < 40 && Convert.ToInt32(textBox3.Text) >= 10)
                     {
                         Dictionary<string, string> edit_event = new Dictionary<string, string>(); //Ассоциативный массив 
-
                         //Находим id выбранного мероприятия
                         MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
                         conn.Open();
@@ -894,9 +774,7 @@ namespace Planetarium
                         command.Parameters.Add("@name", MySqlDbType.VarChar).Value = _selectedPositEvent;
                         MySqlDataReader ed_event = command.ExecuteReader();
                         ed_event.Read();
-
                         edit_event.Add("id_event", Convert.ToString(ed_event[0]));
-
                         ed_event.Close();
                         conn.Close();
 
@@ -912,32 +790,9 @@ namespace Planetarium
                         command.Parameters.Add("@name", MySqlDbType.VarChar).Value = _selectedPositRoom;
                         ed_event = command.ExecuteReader();
                         ed_event.Read();
-
                         edit_event.Add("id_room", Convert.ToString(ed_event[0]));
-
                         ed_event.Close();
                         conn.Close();
-
-                        /* //Находим id редактируемой записи
-                         conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-                         conn.Open();
-
-                         sql = "SELECT id_schedule_entry " +
-                             "FROM schedule " +
-                             "WHERE id_room = @id_r AND data_event = @data AND time_event = @time";
-
-                         command = new MySqlCommand(sql, conn);
-                         command.Parameters.AddWithValue("@id_r", edit_event["id_room"]);
-                         command.Parameters.AddWithValue("@data", _edit_event.Schedule[0].Date_event);
-                         command.Parameters.AddWithValue("@time", _edit_event.Schedule[0].Time_event);
-                         ed_event = command.ExecuteReader();
-                         ed_event.Read();
-
-                         edit_event.Add("id_schedule", Convert.ToString(ed_event[0]));
-
-                         ed_event.Close();
-                         conn.Close();*/
-
                         //Вставляем запись в расписание
                         conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
 
@@ -951,8 +806,6 @@ namespace Planetarium
                         command.Parameters.AddWithValue("@duration", textBox2.Text);
                         command.Parameters.AddWithValue("@numb", textBox3.Text);
                         command.Parameters.AddWithValue("@time", _selectedPositTime);
-                        //  command.Parameters.AddWithValue("@id", edit_event["id_schedule"]);
-
                         command.Connection.Open();
                         command.ExecuteNonQuery();
                         command.Connection.Close();
@@ -986,38 +839,12 @@ namespace Planetarium
                            "WHERE full_name = @name ";
 
                         command = new MySqlCommand(sql, conn);
-
                         command.Parameters.AddWithValue("@name", _selectedPositEmpl);
                         ed_event = command.ExecuteReader();
                         ed_event.Read();
-
                         edit_event.Add("id_empl", Convert.ToString(ed_event[0]));
-
                         ed_event.Close();
                         conn.Close();
-
-                        /*    //Нахадим id редактируемой записи в расписании сотрудников
-                            conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-                            conn.Open();
-
-                            sql = "SELECT id_schedule_entry " +
-                               "FROM schedule_empl " +
-                               "WHERE id_event_entry = @id_ev AND id_employee = @id_empl";
-
-                            command = new MySqlCommand(sql, conn);
-
-                            command.Parameters.AddWithValue("@id_ev", edit_event["id_schedule"]);
-                            command.Parameters.AddWithValue("@id_empl", edit_event["id_empl"]);
-
-                            ed_event = command.ExecuteReader();
-                            ed_event.Read();
-
-                            edit_event.Add("id_sched_emp", Convert.ToString(ed_event[0]));
-
-                            ed_event.Close();
-                            conn.Close();*/
-
-
                         //Добавляем запись в расписание сотрудников
                         conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
 
@@ -1074,13 +901,9 @@ namespace Planetarium
                         command.Parameters.Add("@name", MySqlDbType.VarChar).Value = _new_event.Name_event;
                         MySqlDataReader ed_event = command.ExecuteReader();
                         ed_event.Read();
-
                         id_event = Convert.ToString(ed_event[0]);
-
                         ed_event.Close();
                         conn.Close();
-
-
                         //Вставляем запись в таблицу цен мероприятий
                         conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
 
@@ -1102,9 +925,7 @@ namespace Planetarium
                     }
                     else
                     {
-
                         //Находим id выбранного типа мероприятия
-
                         MySqlConnection conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
                         conn.Open();
 
@@ -1116,33 +937,24 @@ namespace Planetarium
                         command.Parameters.Add("@name", MySqlDbType.VarChar).Value = _selectedPositType;
                         MySqlDataReader ed_event = command.ExecuteReader();
                         ed_event.Read();
-
                         string id_type = Convert.ToString(ed_event[0]);
-
                         ed_event.Close();
                         conn.Close();
 
                         //Вставляем новое мероприятие в репертуар
                         conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
-                        
-
                         sql = "INSERT INTO event (id_event_type, name_event) " +
                             "VALUES (@id_type, @name)";
 
                         command = new MySqlCommand(sql, conn);
-
                         command.Parameters.AddWithValue("@id_type", id_type);
                         command.Parameters.AddWithValue("@name", textBox1.Text);
-
                         command.Connection.Open();
                         command.ExecuteNonQuery();
                         command.Connection.Close();
-
                         //Находим id выбранного мероприятия
-
                         conn = BDUtils.GetDBConnection(); //Получаем объект, подключенный к бд;
                         conn.Open();
-
                         sql = "SELECT id_event " +
                             "FROM event " +
                             "WHERE name_event = @name ";
@@ -1153,7 +965,6 @@ namespace Planetarium
                         ed_event.Read();
 
                         string id_ev = Convert.ToString(ed_event[0]);
-
                         ed_event.Close();
                         conn.Close();
 
@@ -1167,11 +978,9 @@ namespace Planetarium
                         command.Parameters.AddWithValue("@id_ev", id_ev);
                         command.Parameters.AddWithValue("@price", textBox4.Text);
                         command.Parameters.AddWithValue("@data", textBox5.Text);
-
                         command.Connection.Open();
                         command.ExecuteNonQuery();
                         command.Connection.Close();
-
                         MessageBox.Show("Изменения сохнанены.");
                         this.Close();
                         _editRepertForm.Show();
@@ -1198,7 +1007,6 @@ namespace Planetarium
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
