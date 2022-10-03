@@ -36,9 +36,11 @@ string password = "";
 ```
 
 3. Replace the values in quotes with the appropriate ones for your server.
-- `string host` - server IP address;
-- `string database` - name of the database (doesn't need to be changed if you didn't change the name of the imported database);
-- `string username` - database username;
+- `string host` - server IP address.
+- `string database` - name of the database (doesn't need to be changed if you didn't change the name of the imported database).
+- `string username` - database username.
 - `string password` - database user password.
+
+4. Run the project.
 
 
