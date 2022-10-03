@@ -22,5 +22,6 @@ The following functions are available to the "Employee":
 - search for the schedule of the selected room by date;
 - search for an employee's schedule by date.
 ## Building and running the project
-
+###  Server
+See section "Building and running the project" in the project [PlanetariumWeb](https://github.com/EvgeniaSap/PlanetariumWeb).
 
