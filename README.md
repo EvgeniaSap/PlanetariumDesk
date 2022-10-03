@@ -42,5 +42,5 @@ string password = "";
 - `string password` - database user password.
 
 4. Run the project.
-
-
+## Using the PlanetariumDesk
+See the Use Case Diagram for details on the available features.
