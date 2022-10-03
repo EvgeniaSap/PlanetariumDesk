@@ -21,3 +21,6 @@ The following functions are available to the "Employee":
 - displaying the schedule of the room selected by the user;
 - search for the schedule of the selected room by date;
 - search for an employee's schedule by date.
+## Building and running the project
+
+
