@@ -24,4 +24,21 @@ The following functions are available to the "Employee":
 ## Building and running the project
 ###  Server
 See section "Building and running the project" in the project [PlanetariumWeb](https://github.com/EvgeniaSap/PlanetariumWeb).
+### PC
+1. Find the `BDUtils.cs` file in the "Planetarium" project folder.
+
+2. Find the following lines in the file.
+```
+string host = "localhost";
+string database = "planetarium";
+string username = "root";
+string password = "";
+```
+
+3. Replace the values in quotes with the appropriate ones for your server.
+- `string host` - server IP address;
+- `string database` - name of the database (doesn't need to be changed if you didn't change the name of the imported database);
+- `string username` - database username;
+- `string password` - database user password.
+
 
