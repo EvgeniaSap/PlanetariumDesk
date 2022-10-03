@@ -43,4 +43,4 @@ string password = "";
 
 4. Run the project.
 ## Using the PlanetariumDesk
-See the Use Case Diagram for details on the available features.
+See the ![Use Case Diagram](https://github.com/EvgeniaSap/PlanetariumDesk/issues/1#issue-1395116457) for details on the available features.
